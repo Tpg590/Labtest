@@ -45,24 +45,32 @@ public class Program {
      * Displays the initial welcome menu with main options
      */
     public void firstMenu() {
+        // Display the main menu title
         System.out.println("        WELCOME TO STUDENT MANAGEMENT");
-        System.out.println("1. Create");
-        System.out.println("2. Find and Sort");
-        System.out.println("3. Update/Delete");
-        System.out.println("4. Report");
-        System.out.println("5. Exit");
+
+// Display menu options for the user to choose from
+        System.out.println("1. Create");       // Option to create a new student record
+        System.out.println("2. Find and Sort"); // Option to find a student or sort records
+        System.out.println("3. Update/Delete"); // Option to update or delete a student record
+        System.out.println("4. Report");        // Option to generate a report of students
+        System.out.println("5. Exit");          // Option to exit the program
+
     }
 
     /**
      * Displays the subsequent menu after first use
      */
     public void secondMenu() {
-        System.out.println("        STUDENT MANAGEMENT OPTION");
-        System.out.println("1. Create");
-        System.out.println("2. Find and Sort");
-        System.out.println("3. Update/Delete");
-        System.out.println("4. Report");
-        System.out.println("5. Exit");
+        // Display the main menu title
+        System.out.println("        WELCOME TO STUDENT MANAGEMENT");
+
+// Display menu options for the user to choose from
+        System.out.println("1. Create");       // Option to create a new student record
+        System.out.println("2. Find and Sort"); // Option to find a student or sort records
+        System.out.println("3. Update/Delete"); // Option to update or delete a student record
+        System.out.println("4. Report");        // Option to generate a report of students
+        System.out.println("5. Exit");          // Option to exit the program
+
     }
 
     /**
@@ -70,52 +78,62 @@ public class Program {
      */
     public void run() {
         // Display appropriate menu based on first use
-        if (useOption == true) {
-            firstMenu();
+        if (useOption == true) { // If this is the first time running
+            firstMenu(); // Show the first menu
         }
+        // Main program loop
         while (loop) {
-            if (useOption == false) {
+            if (useOption == false) { // If not the first use, show the second menu
                 secondMenu();
             }
-            useOption = false;
+            useOption = false; // Reset the flag after the first use
 
-            // Get and validate user choice
-            System.out.print("        Please choosen:");
-            choice = sc.nextLine().trim();
-            if (choice.isEmpty()) {
+            // Prompt user for input
+            System.out.print("        Please choose: ");
+            choice = sc.nextLine().trim(); // Read and trim user input
+
+            // Validate user input
+            if (choice.isEmpty()) { // Check if input is empty
                 System.out.println("Choice can't be empty.");
-                continue;
+                continue; // Restart the loop
             }
-            // Validate input format
-            if (checkInput(choice, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
-            }
-            if (checkInput(choice, "Can't be enter space.", "[0-9a-zA-Z]+")) {
-                continue;
-            }
-            if (checkInput(choice, "Can't be enter character.", "[0-9 ]+")) {
-                continue;
-            }
-            if (checkInput(choice, "Please enter again (1-5).", "[1-5]")) {
+
+            // Ensure input does not contain special characters
+            if (checkInput(choice, "Can't enter special characters.", "[a-zA-Z0-9 ]+")) {
                 continue;
             }
 
-            // Process user choice
+            // Ensure input does not contain spaces
+            if (checkInput(choice, "Can't enter spaces.", "[0-9a-zA-Z]+")) {
+                continue;
+            }
+
+            // Ensure input is not a character (must be a number)
+            if (checkInput(choice, "Can't enter letters.", "[0-9 ]+")) {
+                continue;
+            }
+
+            // Ensure input is between 1-5
+            if (checkInput(choice, "Please enter a valid option (1-5).", "[1-5]")) {
+                continue;
+            }
+
+            // Process user choice using switch-case
             switch (choice) {
                 case "1":
-                    createStudentInfo();
+                    createStudentInfo(); // Call method to create a new student record
                     break;
                 case "2":
-                    findStudent();
+                    findStudent(); // Call method to find and sort students
                     break;
                 case "3":
-                    updateDelete();
+                    updateDelete(); // Call method to update or delete student records
                     break;
                 case "4":
-                    report();
+                    report(); // Call method to generate a student report
                     break;
                 case "5":
-                    loop = false;
+                    loop = false; // Exit the loop and end the program
                     break;
             }
         }
@@ -126,13 +144,23 @@ public class Program {
      * student
      */
     public void createStudentInfo() {
+        // Prompt user to input Student ID
         inputStudentID();
-        if (studentName == null) {  // Only input name for new student IDs
-            inputStudentName();
+
+// Check if studentName is null (indicating a new student ID)
+        if (studentName == null) {
+            inputStudentName(); // If it's a new student ID, prompt user to input the student's name
         }
+
+// Prompt user to input Semester
         inputStudentSemester();
+
+// Prompt user to input Course
         inputStudentCourse();
+
+// Create a new StudentInfo object with the collected details and add it to the storage list
         studentStorage.add(new StudentInfo(studentID, studentName, studentSemester, studentCourse));
+
     }
 
     /**
@@ -140,24 +168,37 @@ public class Program {
      * letters and spaces - Cannot be empty
      */
     public void inputStudentName() {
+        // Initialize miniLoop to true for input validation loop
         miniLoop = true;
+
+// Start a loop to continuously prompt the user until valid input is received
         while (miniLoop) {
             System.out.print("Enter Name: ");
-            input = sc.nextLine().trim();
-            // Validate input
+            input = sc.nextLine().trim(); // Read user input and remove leading/trailing spaces
+
+            // Check if the input is empty
             if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
+                System.out.println("Choice can't be empty."); // Warn the user if input is blank
+                continue; // Restart the loop to get a valid input
             }
+
+            // Validate that input does not contain special characters
             if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
+                continue; // Restart loop if validation fails
             }
+
+            // Validate that input does not contain numbers
             if (checkInput(input, "Can't be enter number.", "[a-zA-Z ]+")) {
-                continue;
+                continue; // Restart loop if validation fails
             }
+
+            // If all validations pass, assign the input to studentName
             studentName = input;
+
+            // Exit the loop since we got a valid name
             miniLoop = false;
         }
+
     }
 
     /**
@@ -166,73 +207,103 @@ public class Program {
      * if found
      */
     public void inputStudentID() {
-        // Special handling for first student
+        // Special handling for the first student entry
         if (studentStorage.isEmpty()) {
+            // Initialize miniLoop to true for input validation loop
             miniLoop = true;
+
+            // Start a loop to continuously prompt the user until valid input is received
             while (miniLoop) {
                 System.out.print("Enter ID: ");
-                input = sc.nextLine().trim().toUpperCase();
-                stepOneInputID = input;
-                // Validate input format
+                input = sc.nextLine().trim().toUpperCase(); // Read user input, remove spaces, and convert to uppercase
+                stepOneInputID = input; // Store the input temporarily
+
+                // Check if the input is empty
                 if (input.isEmpty()) {
-                    System.out.println("Choice can't be empty.");
-                    continue;
+                    System.out.println("Choice can't be empty."); // Warn the user if input is blank
+                    continue; // Restart the loop to get valid input
                 }
+
+                // Validate that input does not contain special characters (except letters and numbers)
                 if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                    continue;
+                    continue; // Restart loop if validation fails
                 }
+
+                // Validate that input does not contain spaces
                 if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                    continue;
+                    continue; // Restart loop if validation fails
                 }
+
+                // Validate that the input follows the format "CExxxxxx" (CE followed by 6 digits)
                 if (checkInput(input, "Student ID example form (CExxxxxx), Please enter again.", "^(CE)[0-9]{6,6}")) {
-                    continue;
+                    continue; // Restart loop if validation fails
                 }
+
+                // If all validations pass, assign the input to studentID
                 studentID = input;
-                studentName = null;  // Reset studentName for new ID
+                studentName = null; // Reset studentName for a new student ID
+
+                // Exit the loop since a valid student ID is entered
                 miniLoop = false;
             }
+
+            // Return immediately since this is the first student entry
             return;
         }
 
         // Normal ID input process
-        miniLoop = true;
+        miniLoop = true; // Initialize loop control variable
+
         while (miniLoop) {
             System.out.print("Enter ID: ");
-            input = sc.nextLine().trim().toUpperCase();
-            stepOneInputID = input;
+            input = sc.nextLine().trim().toUpperCase(); // Read input, trim spaces, convert to uppercase
+            stepOneInputID = input; // Store the input temporarily
+
             // Validate input format
+            // Check if input is empty
             if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
-            }
-            if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                continue;
-            }
-            if (checkInput(input, "Student ID example form (CExxxxxx), Please enter again.", "^(CE)[0-9]{6,6}")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop to get valid input
             }
 
-            // Check for existing ID
-            boolean idExists = false;
-            for (StudentInfo studentInfo : studentStorage) {
-                if (studentInfo.getStudentID().equals(input)) {
-                    System.out.println("This ID existed so skip step enter name:");
-                    studentID = input;
-                    studentName = studentInfo.getStudentName();
-                    idExists = true;
-                    break;
+            // Ensure input contains only letters and numbers (no special characters)
+            if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Ensure input does not contain spaces
+            if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Ensure input follows the format "CExxxxxx" (CE followed by 6 digits)
+            if (checkInput(input, "Student ID example form (CExxxxxx), Please enter again.", "^(CE)[0-9]{6,6}")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Check for existing ID in the student storage
+            boolean idExists = false; // Flag to track if the ID is found
+
+            for (StudentInfo studentInfo : studentStorage) { // Loop through stored students
+                if (studentInfo.getStudentID().equals(input)) { // Compare entered ID with stored ones
+                    System.out.println("This ID existed so skip step enter name:"); // Notify user
+                    studentID = input; // Assign ID
+                    studentName = studentInfo.getStudentName(); // Retrieve existing name
+                    idExists = true; // Mark ID as found
+                    break; // Exit loop since ID is found
                 }
             }
 
+            // If ID is not found, assign input to studentID and reset studentName for new entry
             if (!idExists) {
                 studentID = input;
-                studentName = null;  // Reset studentName for new ID
+                studentName = null; // Reset studentName for a new ID
             }
+
+            // Exit the input loop since a valid ID has been entered
             miniLoop = false;
         }
+
     }
 
     /**
@@ -241,70 +312,97 @@ public class Program {
      * registered for 3 courses in the semester
      */
     public void inputStudentSemester() {
-        // Special handling for first student
-        if (studentStorage.isEmpty()) {
-            miniLoop = true;
+        // Special handling for the first student entry
+        if (studentStorage.isEmpty()) { // Check if there are no existing students in storage
+            miniLoop = true; // Initialize loop control variable
+
             while (miniLoop) {
-                System.out.print("Enter semester: ");
-                input = sc.nextLine().trim().toUpperCase();
-                stepThreeInputSemester = input;
+                System.out.print("Enter semester: "); // Prompt user for semester input
+                input = sc.nextLine().trim().toUpperCase(); // Read input, trim spaces, convert to uppercase
+                stepThreeInputSemester = input; // Store input for later reference
+
                 // Validate input format
+                // Check if input is empty
                 if (input.isEmpty()) {
-                    System.out.println("Choice can't be empty.");
-                    continue;
-                }
-                if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                    continue;
-                }
-                if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                    continue;
-                }
-                if (checkInput(input, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.", "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
-                    continue;
+                    System.out.println("Choice can't be empty."); // Display error message
+                    continue; // Restart loop to get valid input
                 }
 
+                // Ensure input contains only letters and numbers (no special characters except space)
+                if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // Ensure input does not contain spaces
+                if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // Ensure input follows the required semester format (SPxx, SUxx, FAxx)
+                if (checkInput(input, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.",
+                        "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // If input is valid, assign it to studentSemester
                 studentSemester = input;
-                miniLoop = false;
-                return;
+                miniLoop = false; // Exit loop
+                return; // Exit function since the first student has been handled
             }
         }
 
         // Normal semester input process
-        miniLoop = true;
+        miniLoop = true; // Initialize loop control variable
+
         while (miniLoop) {
-            System.out.print("Enter semester: ");
-            input = sc.nextLine().trim().toUpperCase();
-            stepThreeInputSemester = input;
+            System.out.print("Enter semester: "); // Prompt user to enter semester
+            input = sc.nextLine().trim().toUpperCase(); // Read input, trim spaces, and convert to uppercase
+            stepThreeInputSemester = input; // Store input for reference
+
             // Validate input format
+            // Check if input is empty
             if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
-            }
-            if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                continue;
-            }
-            if (checkInput(input, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.", "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop to get valid input
             }
 
-            // Check number of courses student has in this semester
-            Set<String> studentCourses = new HashSet<>();
-            for (StudentInfo studentInfo : studentStorage) {
+            // Ensure input contains only letters and numbers (no special characters except spaces)
+            if (checkInput(input, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Ensure input does not contain spaces (removes cases where spaces may cause errors)
+            if (checkInput(input, "Can't be enter space.", "[a-zA-Z0-9]+")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Ensure input follows the required semester format (SPxx, SUxx, or FAxx, where xx is two digits)
+            if (checkInput(input, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.",
+                    "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
+                continue; // Restart loop if validation fails
+            }
+
+            // Check the number of courses the student has already registered for this semester
+            Set<String> studentCourses = new HashSet<>(); // Create a set to track unique courses
+
+            for (StudentInfo studentInfo : studentStorage) { // Loop through stored student records
+                // Check if student ID matches and semester matches
                 if (studentInfo.getStudentID().equals(stepOneInputID) && studentInfo.getStudentSemester().equals(input)) {
-                    studentCourses.add(studentInfo.getStudentCourse());
+                    studentCourses.add(studentInfo.getStudentCourse()); // Add course to set
                 }
             }
-            // Prevent registration if student already has 3 courses
+
+            // Prevent registration if student has already registered for 3 courses in this semester
             if (studentCourses.size() >= 3) {
                 System.out.println("You have already registered all 3 courses in this semester. Please choose another semester.");
-                continue;
+                continue; // Restart loop to enter a different semester
             }
+
+            // If all checks pass, assign input to studentSemester
             studentSemester = input;
-            miniLoop = false;
+            miniLoop = false; // Exit loop
         }
+
     }
 
     /**
@@ -313,70 +411,97 @@ public class Program {
      * the semester
      */
     public void inputStudentCourse() {
-        // Special handling for first student
+        // Special handling for the first student (if student storage is empty)
         if (studentStorage.isEmpty()) {
-            miniLoop = true;
+            miniLoop = true; // Initialize loop control variable
+
             while (miniLoop) {
-                System.out.print("Enter course: ");
-                input = sc.nextLine().trim().toUpperCase();
+                System.out.print("Enter course: "); // Prompt the user to enter a course
+                input = sc.nextLine().trim().toUpperCase(); // Read input, trim spaces, convert to uppercase
+
                 // Validate input format
+                // Check if input is empty
                 if (input.isEmpty()) {
-                    System.out.println("Choice can't be empty.");
-                    continue;
-                }
-                if (checkInput(input, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
-                    continue;
-                }
-                if (checkInput(input, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
-                    continue;
-                }
-                if (checkInput(input, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.", "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
-                    continue;
+                    System.out.println("Choice can't be empty."); // Display error message
+                    continue; // Restart loop to get valid input
                 }
 
+                // Ensure input only contains letters, numbers, and allowed special characters (., /, +)
+                if (checkInput(input, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // Ensure input does not contain numbers (only letters and allowed special characters)
+                if (checkInput(input, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // Ensure input matches one of the three allowed course formats (JAVA, .NET, or C/C++)
+                if (checkInput(input, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.",
+                        "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
+                    continue; // Restart loop if validation fails
+                }
+
+                // Assign valid input to studentCourse
                 studentCourse = input;
-                miniLoop = false;
-                return;
+                miniLoop = false; // Exit loop
+                return; // Exit function (since this block is for the first student only)
             }
         }
 
-        // Normal course input process
-        miniLoop = true;
+// Normal course input process (for students who are not the first entry)
+        miniLoop = true; // Initialize loop control variable
+
         while (miniLoop) {
-            System.out.print("Enter course: ");
-            input = sc.nextLine().trim().toUpperCase();
+            System.out.print("Enter course: "); // Prompt user to enter a course  
+            input = sc.nextLine().trim().toUpperCase(); // Read input, trim spaces, convert to uppercase  
+
             // Validate input format
+            // Check if input is empty  
             if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(input, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
-                continue;
-            }
-            if (checkInput(input, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
-                continue;
-            }
-            if (checkInput(input, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.", "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message  
+                continue; // Restart loop to get valid input  
             }
 
-            // Check if student already registered for this course in the semester
-            boolean alreadyRegistered = false;
+            // Ensure input only contains letters, numbers, and allowed special characters (., /, +)  
+            if (checkInput(input, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
+                continue; // Restart loop if validation fails  
+            }
+
+            // Ensure input does not contain numbers (only letters and allowed special characters)  
+            if (checkInput(input, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
+                continue; // Restart loop if validation fails  
+            }
+
+            // Ensure input matches one of the three allowed course formats (JAVA, .NET, or C/C++)  
+            if (checkInput(input, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.",
+                    "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
+                continue; // Restart loop if validation fails  
+            }
+
+            // Check if student already registered for this course in the given semester  
+            boolean alreadyRegistered = false; // Flag to track duplicate course registration  
             for (StudentInfo studentInfo : studentStorage) {
-                if (studentInfo.getStudentID().equals(stepOneInputID) && studentInfo.getStudentSemester().equals(stepThreeInputSemester) && studentInfo.getStudentCourse().equals(input)) {
-                    System.out.println("Error, this course already exist. Please enter again.");
-                    alreadyRegistered = true;
-                    break;
+                // Check if student ID, semester, and course match an existing entry  
+                if (studentInfo.getStudentID().equals(stepOneInputID)
+                        && studentInfo.getStudentSemester().equals(stepThreeInputSemester)
+                        && studentInfo.getStudentCourse().equals(input)) {
+                    System.out.println("Error, this course already exists. Please enter again."); // Display error  
+                    alreadyRegistered = true; // Set flag to true  
+                    break; // Exit loop since duplicate is found  
                 }
             }
 
+            // If the course is already registered, restart the loop  
             if (alreadyRegistered) {
                 continue;
             }
 
+            // Assign valid input to studentCourse  
             studentCourse = input;
-            miniLoop = false;
+            miniLoop = false; // Exit loop  
         }
+
     }
 
     /**
@@ -384,21 +509,27 @@ public class Program {
      * format with columns for ID, Name, Semester, and Course
      */
     public void report() {
+        // Check if there are any students in the storage
         if (studentStorage.isEmpty()) {
-            System.out.println("Have no student to report");
-            return;
+            System.out.println("Have no student to report"); // Inform user that there are no students
+            return; // Exit the method
         }
-        // Print report header
+
+// Print report header
         System.out.println("                       REPORT TABLE                        ");
         System.out.println("+-----+------------+------------------+----------+--------+");
         System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
         System.out.println("+-----+------------+------------------+----------+--------+");
-        // Print each record
+
+// Loop through each student and print their report details
         for (int i = 0; i < studentStorage.size(); i++) {
-            System.out.printf("|%5d", i + 1);
-            System.out.println(studentStorage.get(i).getReport());
+            System.out.printf("|%5d", i + 1); // Print row number with proper formatting  
+            System.out.println(studentStorage.get(i).getReport()); // Get and print the report data for the student
         }
+
+// Print table footer
         System.out.println("+-----+------------+------------------+----------+--------+");
+
     }
 
     /**
@@ -406,51 +537,53 @@ public class Program {
      * by ID - Search by Name - Search by Course - Search by Semester
      */
     public void findStudent() {
+        // Check if studentStorage is empty before allowing a search
         if (studentStorage.isEmpty()) {
-            System.out.println("No student data available.");
-            return;
+            System.out.println("No student data available."); // Inform user that there are no students
+            return; // Exit the method
         }
 
-        miniLoop = true;
+        miniLoop = true; // Set miniLoop to true to keep the search menu running
         while (miniLoop) {
-            // Display search menu
+            // Display search menu options
             System.out.println("\n----- Search Menu -----");
-            System.out.println("1. Search by ID");
-            System.out.println("2. Search by Name");
-            System.out.println("3. Search by Course");
-            System.out.println("4. Search by Semester");
-            System.out.println("5. Back to Main Menu");
-            System.out.print("Enter your choice: ");
+            System.out.println("1. Search by ID");         // Option to search students by ID
+            System.out.println("2. Search by Name");       // Option to search students by Name
+            System.out.println("3. Search by Course");     // Option to search students by Course
+            System.out.println("4. Search by Semester");   // Option to search students by Semester
+            System.out.println("5. Back to Main Menu");    // Option to return to the main menu
+            System.out.print("Enter your choice: ");       // Prompt user for input
 
             // Get and validate user choice
-            input = sc.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
+            input = sc.nextLine().trim(); // Read and trim user input
+            if (input.isEmpty()) {  // Check if input is empty
+                System.out.println("Choice can't be empty."); // Show error message
+                continue; // Restart the loop
             }
             if (checkInput(input, "Please enter a number between 1-5.", "[1-5]")) {
-                continue;
+                continue; // Restart the loop if input is invalid
             }
 
-            // Process search choice
+            // Process search choice using switch statement
             switch (input) {
                 case "1":
-                    searchById();
+                    searchById(); // Call method to search by student ID
                     break;
                 case "2":
-                    searchByName();
+                    searchByName(); // Call method to search by student Name
                     break;
                 case "3":
-                    searchByCourse();
+                    searchByCourse(); // Call method to search by Course
                     break;
                 case "4":
-                    searchBySemester();
+                    searchBySemester(); // Call method to search by Semester
                     break;
                 case "5":
-                    miniLoop = false;
+                    miniLoop = false; // Exit the loop and return to the main menu
                     break;
             }
         }
+
     }
 
     /**
@@ -458,258 +591,331 @@ public class Program {
      * courses and semesters registered under the ID
      */
     private void searchById() {
-        miniLoop = true;
+        miniLoop = true; // Initialize loop to allow repeated input if necessary
         while (miniLoop) {
-            System.out.print("Enter Student ID: ");
-            String searchId = sc.nextLine().trim().toUpperCase();
-            boolean found = false;
+            System.out.print("Enter Student ID: "); // Prompt user to enter a student ID
+            String searchId = sc.nextLine().trim().toUpperCase(); // Read input, trim whitespace, and convert to uppercase
+            boolean found = false; // Flag to check if the student ID exists
+
+            // Validate input - ensure it is not empty
             if (searchId.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop
             }
+
+            // Validate input format - prevent special characters
             if (checkInput(searchId, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
+                continue; // Restart loop if input contains invalid characters
             }
+
+            // Validate input format - prevent spaces
             if (checkInput(searchId, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                continue;
+                continue; // Restart loop if input contains spaces
             }
+
+            // Validate input format - ensure Student ID follows correct pattern (e.g., CExxxxxx)
             if (checkInput(searchId, "Student ID example form (CExxxxxx), Please enter again.", "^(CE)[0-9]{6,6}")) {
-                continue;
+                continue; // Restart loop if format is incorrect
             }
-            // Create temporary list for search results
+
+            // Create a temporary list to store search results
             List<StudentInfo> searchResults = new ArrayList<>();
+
+            // Iterate through student storage to find matches
             for (StudentInfo student : studentStorage) {
-                if (student.getStudentID().equalsIgnoreCase(searchId)) {
-                    searchResults.add(student);
-                    found = true;
+                if (student.getStudentID().equalsIgnoreCase(searchId)) { // Case-insensitive comparison
+                    searchResults.add(student); // Add matching student to results list
+                    found = true; // Set flag to indicate a match was found
                 }
             }
 
+            // If a matching student ID is found, display results
             if (found) {
-                // Display results in table format
                 System.out.println("\n                    SEARCH RESULTS                    ");
                 System.out.println("+-----+------------+------------------+----------+--------+");
                 System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
                 System.out.println("+-----+------------+------------------+----------+--------+");
 
-                // Print each matching record
+                // Print each student record found in search results
                 for (int i = 0; i < searchResults.size(); i++) {
                     System.out.printf("|%5d", i + 1);
-                    System.out.println(searchResults.get(i).getReport());
+                    System.out.println(searchResults.get(i).getReport()); // Calls getReport() to format student data
                 }
 
-                // Print summary
+                // Print summary table footer
                 System.out.println("+-----+------------+------------------+----------+--------+");
-                miniLoop = false;
-            } else {
+                miniLoop = false; // Exit the loop since search is successful
+
+            } else { // If no student found
                 System.out.println("No student found with ID: " + searchId);
-                miniLoop = false;
+                miniLoop = false; // Exit the loop
             }
         }
+
+// Sort the student storage by ID after the search operation
+        sortByID();
+
     }
 
     /**
      * Searches for students by name (case-insensitive, partial match)
      */
     private void searchByName() {
-        miniLoop = true;
+        miniLoop = true; // Initialize loop to allow repeated input if necessary
         while (miniLoop) {
-            System.out.print("Enter Student Name: ");
-            String searchName = sc.nextLine().trim();
-            boolean found = false;
+            System.out.print("Enter Student Name: "); // Prompt user to enter a student name
+            String searchName = sc.nextLine().trim(); // Read input and trim whitespace
+            boolean found = false; // Flag to check if the student name exists
+
+            // Validate input - ensure it is not empty
             if (searchName.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop
             }
+
+            // Validate input format - prevent special characters
             if (checkInput(searchName, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
+                continue; // Restart loop if input contains invalid characters
             }
+
+            // Validate input format - prevent numbers
             if (checkInput(searchName, "Can't be enter number.", "[a-zA-Z ]+")) {
-                continue;
+                continue; // Restart loop if input contains numbers
             }
-            // Create temporary list for search results
+
+            // Create a temporary list to store search results
             List<StudentInfo> searchResults = new ArrayList<>();
+
+            // Iterate through student storage to find matching names (case-insensitive search)
             for (StudentInfo student : studentStorage) {
                 if (student.getStudentName().toLowerCase().contains(searchName.toLowerCase())) {
-                    searchResults.add(student);
-                    found = true;
+                    searchResults.add(student); // Add matching student to results list
+                    found = true; // Set flag to indicate a match was found
                 }
             }
 
+            // If a matching student name is found, display results
             if (found) {
-                // Display results in table format
                 System.out.println("\n                    SEARCH RESULTS                    ");
                 System.out.println("+-----+------------+------------------+----------+--------+");
                 System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
                 System.out.println("+-----+------------+------------------+----------+--------+");
 
-                // Print each matching record
+                // Print each student record found in search results
                 for (int i = 0; i < searchResults.size(); i++) {
                     System.out.printf("|%5d", i + 1);
-                    System.out.println(searchResults.get(i).getReport());
+                    System.out.println(searchResults.get(i).getReport()); // Calls getReport() to format student data
                 }
 
-                // Print summary
+                // Print summary table footer
                 System.out.println("+-----+------------+------------------+----------+--------+");
-                miniLoop = false;
-            } else {
+                miniLoop = false; // Exit the loop since search is successful
+
+            } else { // If no student found
                 System.out.println("No student found with name containing: " + searchName);
-                miniLoop = false;
+                miniLoop = false; // Exit the loop
             }
         }
+
+// Sort student records by first name after the search operation
+        sortFirstName();
+
     }
 
     /**
      * Searches for students by course
      */
     private void searchByCourse() {
+        // Initialize loop to allow repeated input if necessary
         miniLoop = true;
         while (miniLoop) {
+            // Prompt user to enter a course name
             System.out.print("Enter Course (JAVA, .NET, C/C++): ");
-            String searchCourse = sc.nextLine().trim().toUpperCase();
-            boolean found = false;
+            String searchCourse = sc.nextLine().trim().toUpperCase(); // Read input and convert to uppercase
+            boolean found = false; // Flag to track if the course is found
+
+            // Validate input - ensure it is not empty
             if (searchCourse.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(searchCourse, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
-                continue;
-            }
-            if (checkInput(searchCourse, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
-                continue;
-            }
-            if (checkInput(searchCourse, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.", "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop
             }
 
-            // Create temporary list for search results
+            // Validate input format - allow only letters, numbers, '.', '/', and '+'
+            if (checkInput(searchCourse, "Can't be enter special character except ., /, +.", "[a-zA-Z0-9./+ ]+")) {
+                continue; // Restart loop if invalid characters are found
+            }
+
+            // Validate input format - prevent numbers
+            if (checkInput(searchCourse, "Can't be enter number.", "[a-zA-Z./+ ]+")) {
+                continue; // Restart loop if numbers are found
+            }
+
+            // Validate input format - ensure it matches one of the three valid course names (JAVA, .NET, C/C++)
+            if (checkInput(searchCourse, "Student Course can be enter only three form (JAVA|.NET|C/C++), Please enter again.",
+                    "^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
+                continue; // Restart loop if input does not match valid formats
+            }
+
+            // Create a temporary list to store students registered for the specified course
             List<StudentInfo> searchResults = new ArrayList<>();
+
+            // Iterate through student storage to find matching courses
             for (StudentInfo student : studentStorage) {
-                if (student.getStudentCourse().contains(searchCourse)) {
-                    searchResults.add(student);
-                    found = true;
+                if (student.getStudentCourse().contains(searchCourse)) { // Check if the course matches
+                    searchResults.add(student); // Add matching student to results list
+                    found = true; // Set flag to indicate a match was found
                 }
             }
 
+            // If a matching course is found, display results
             if (found) {
-                // Display results in table format
                 System.out.println("\n                    SEARCH RESULTS                    ");
                 System.out.println("+-----+------------+------------------+----------+--------+");
                 System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
                 System.out.println("+-----+------------+------------------+----------+--------+");
 
-                // Print each matching record
+                // Print each student record found in search results
                 for (int i = 0; i < searchResults.size(); i++) {
                     System.out.printf("|%5d", i + 1);
-                    System.out.println(searchResults.get(i).getReport());
+                    System.out.println(searchResults.get(i).getReport()); // Calls getReport() to format student data
                 }
 
-                // Print summary
+                // Print summary table footer
                 System.out.println("+-----+------------+------------------+----------+--------+");
-                miniLoop = false;
-            } else {
+                miniLoop = false; // Exit the loop since search is successful
+
+            } else { // If no student found in the specified course
                 System.out.println("No student found in course: " + searchCourse);
-                miniLoop = false;
+                miniLoop = false; // Exit the loop
             }
         }
+
+// Sort student records by course name after the search operation
+        sortCourse();
+
     }
 
     /**
      * Searches for students by semester
      */
     private void searchBySemester() {
+        // Initialize loop to allow repeated input if necessary
         miniLoop = true;
         while (miniLoop) {
+            // Prompt user to enter the semester
             System.out.print("Enter Semester: ");
-            String searchSemester = sc.nextLine().trim().toUpperCase();
-            boolean found = false;
+            String searchSemester = sc.nextLine().trim().toUpperCase(); // Read input and convert to uppercase
+            boolean found = false; // Flag to track if a matching semester is found
+
+            // Validate input - ensure it is not empty
             if (searchSemester.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(searchSemester, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
-                continue;
-            }
-            if (checkInput(searchSemester, "Can't be enter space.", "[a-zA-Z0-9]+")) {
-                continue;
-            }
-            if (checkInput(searchSemester, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.", "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop
             }
 
-            // Create temporary list for search results
+            // Validate input format - prevent special characters except letters and numbers
+            if (checkInput(searchSemester, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+                continue; // Restart loop if invalid characters are found
+            }
+
+            // Validate input format - prevent spaces in semester code
+            if (checkInput(searchSemester, "Can't be enter space.", "[a-zA-Z0-9]+")) {
+                continue; // Restart loop if spaces are found
+            }
+
+            // Validate input format - ensure it follows the correct semester format (e.g., SP24, SU22, FA20)
+            if (checkInput(searchSemester, "Student semester example form (SPxx|SUxx|FAxx), Please enter again.",
+                    "^(SP)[0-9]{2,2}|^(SU)[0-9]{2,2}|^(FA)[0-9]{2,2}")) {
+                continue; // Restart loop if input does not match valid formats
+            }
+
+            // Create a temporary list to store students registered in the specified semester
             List<StudentInfo> searchResults = new ArrayList<>();
+
+            // Iterate through student storage to find matching semester entries
             for (StudentInfo student : studentStorage) {
-                if (student.getStudentSemester().equals(searchSemester)) {
-                    searchResults.add(student);
-                    found = true;
+                if (student.getStudentSemester().equals(searchSemester)) { // Check if semester matches
+                    searchResults.add(student); // Add matching student to results list
+                    found = true; // Set flag to indicate a match was found
                 }
             }
 
+            // If a matching semester is found, display results
             if (found) {
-                // Display results in table format
                 System.out.println("\n                    SEARCH RESULTS                    ");
                 System.out.println("+-----+------------+------------------+----------+--------+");
                 System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
                 System.out.println("+-----+------------+------------------+----------+--------+");
 
-                // Print each matching record
+                // Print each student record found in search results
                 for (int i = 0; i < searchResults.size(); i++) {
                     System.out.printf("|%5d", i + 1);
-                    System.out.println(searchResults.get(i).getReport());
+                    System.out.println(searchResults.get(i).getReport()); // Calls getReport() to format student data
                 }
 
-                // Print summary
+                // Print summary table footer
                 System.out.println("+-----+------------+------------------+----------+--------+");
-                miniLoop = false;
-            } else {
+                miniLoop = false; // Exit the loop since search is successful
+
+            } else { // If no student found for the specified semester
                 System.out.println("No student found in semester: " + searchSemester);
-                miniLoop = false;
+                miniLoop = false; // Exit the loop
             }
         }
+
+// Sort student records by semester after the search operation
+        sortSemester();
+
     }
 
     /**
      * Provides menu for update and delete operations
      */
     public void updateDelete() {
+        // Check if the student storage is empty before proceeding
         if (studentStorage.isEmpty()) {
-            System.out.println("No student data available.");
-            return;
+            System.out.println("No student data available."); // Inform the user that no student records exist
+            return; // Exit the method
         }
 
+// Initialize loop to keep displaying the menu until the user chooses to exit
         miniLoop = true;
         while (miniLoop) {
-            // Display update/delete menu
+            // Display Update/Delete menu options
             System.out.println("\n----- Update/Delete Menu -----");
             System.out.println("1. Update Student");
             System.out.println("2. Delete Student");
             System.out.println("3. Back to Main Menu");
             System.out.print("Enter your choice: ");
 
-            // Get and validate user choice
+            // Read and trim user input to remove leading/trailing spaces
             input = sc.nextLine().trim();
+
+            // Validate input - ensure the choice is not empty
             if (input.isEmpty()) {
-                System.out.println("Choice can't be empty.");
-                continue;
-            }
-            if (checkInput(input, "Please enter a number between 1-3.", "[1-3]")) {
-                continue;
+                System.out.println("Choice can't be empty."); // Display error message
+                continue; // Restart loop to prompt again
             }
 
-            // Process user choice
+            // Validate input - ensure the choice is between 1 and 3
+            if (checkInput(input, "Please enter a number between 1-3.", "[1-3]")) {
+                continue; // Restart loop if input is invalid
+            }
+
+            // Process user choice using a switch statement
             switch (input) {
                 case "1":
-                    updateStudent();
+                    updateStudent(); // Call method to update student information
                     break;
                 case "2":
-                    deleteStudent();
+                    deleteStudent(); // Call method to delete a student record
                     break;
                 case "3":
-                    miniLoop = false;
+                    miniLoop = false; // Exit the loop and return to the main menu
                     break;
             }
         }
+
     }
 
     /**
@@ -723,38 +929,42 @@ public class Program {
         String updateId;
         while (true) {
             System.out.print("Enter Student ID to update: ");
-            updateId = sc.nextLine().trim().toUpperCase();
+            updateId = sc.nextLine().trim().toUpperCase(); // Convert input to uppercase for consistency
+
+            // Check if the input is empty
             if (updateId.isEmpty()) {
                 System.out.println("Student ID cannot be empty.");
+                continue; // Restart loop to prompt user again
+            }
+
+            // Validate the student ID format
+            if (checkInput(updateId, "Can't enter special characters.", "[a-zA-Z0-9 ]+")) {
                 continue;
             }
-            if (checkInput(updateId, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+            if (checkInput(updateId, "Spaces are not allowed in the ID.", "[a-zA-Z0-9]+")) {
                 continue;
             }
-            if (checkInput(updateId, "Can't be enter space.", "[a-zA-Z0-9]+")) {
+            if (checkInput(updateId, "Student ID format: CExxxxxx (Example: CE123456). Please enter again.", "^(CE)[0-9]{6,6}")) {
                 continue;
             }
-            if (checkInput(updateId, "Student ID example form (CExxxxxx), Please enter again.", "^(CE)[0-9]{6,6}")) {
-                continue;
-            }
-            break;
+            break; // Exit loop if validation passes
         }
 
-        // Find all records with the given ID
+// Find all student records with the given ID
         List<StudentInfo> updateList = new ArrayList<>();
         for (StudentInfo student : studentStorage) {
-            if (student.getStudentID().equalsIgnoreCase(updateId)) {
+            if (student.getStudentID().equalsIgnoreCase(updateId)) { // Case-insensitive comparison
                 updateList.add(student);
             }
         }
 
-        // Check if any records were found
+// Check if any matching records were found
         if (updateList.isEmpty()) {
             System.out.println("No student found with ID: " + updateId);
-            return;
+            return; // Exit if no student is found
         }
 
-        // Display current information in a table format
+// Display current student information in a table format
         System.out.println("\nCurrent Student Information:");
         System.out.println("+-----+------------+------------------+----------+--------+");
         System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
@@ -765,7 +975,7 @@ public class Program {
         }
         System.out.println("+-----+------------+------------------+----------+--------+");
 
-        // Update menu loop
+// Loop to manage the update menu
         while (true) {
             // Display update options
             System.out.println("\nWhat would you like to update?");
@@ -775,249 +985,301 @@ public class Program {
             System.out.println("4. Back");
             System.out.print("Enter your choice: ");
 
-            // Validate user's choice
+            // Read user input and validate
             String updateChoice = sc.nextLine().trim();
             if (updateChoice.isEmpty() || !updateChoice.matches("[1-4]")) {
                 System.out.println("Please enter a number between 1-4.");
-                continue;
+                continue; // Restart loop if input is invalid
+            }
+
+            // Process the update choice
+            switch (updateChoice) {
+                case "1":
+                    // Update name logic here
+                    break;
+                case "2":
+                    // Update semester logic here
+                    break;
+                case "3":
+                    // Update course logic here
+                    break;
+                case "4":
+                    return; // Exit update process and return to the previous menu
             }
 
             switch (updateChoice) {
                 case "1":
-                    // Update name for all records with the same ID
+                    // Loop to validate and update the student's name
                     while (true) {
                         System.out.print("Enter new name: ");
-                        String newName = sc.nextLine().trim();
+                        String newName = sc.nextLine().trim(); // Remove leading/trailing spaces
+
+                        // Check if the input is empty
                         if (newName.isEmpty()) {
                             System.out.println("Name cannot be empty.");
+                            continue; // Restart loop to prompt user again
+                        }
+
+                        // Validate that the name does not contain special characters or numbers
+                        if (checkInput(newName, "Name cannot contain special characters.", "[a-zA-Z0-9 ]+")) {
                             continue;
                         }
-                        if (checkInput(newName, "Can't be enter special character.", "[a-zA-Z0-9 ]+")) {
+                        if (checkInput(newName, "Name cannot contain numbers.", "[a-zA-Z ]+")) {
                             continue;
                         }
-                        if (checkInput(newName, "Can't be enter number.", "[a-zA-Z ]+")) {
-                            continue;
-                        }
-                        // Update all records with matching ID
+
+                        // Update the name for all student records with the given ID
                         for (StudentInfo student : studentStorage) {
-                            if (student.getStudentID().equalsIgnoreCase(updateId)) {
-                                student.setStudentName(newName);
+                            if (student.getStudentID().equalsIgnoreCase(updateId)) { // Case-insensitive comparison
+                                student.setStudentName(newName); // Update student name
                             }
                         }
+
                         System.out.println("Name updated successfully!");
-                        break;
+                        break; // Exit the loop after successful update
                     }
                     break;
 
                 case "2":
-                    // Update semester for a specific record
+                    // Loop until a valid input is provided
                     while (true) {
-                        System.out.print("Enter record number to update semester (1-" + updateList.size() + "): ");
-                        String recordInput = sc.nextLine().trim();
-                        if (recordInput.isEmpty()) {
-                            System.out.println("Record number cannot be empty.");
-                            continue;
+                        // Prompt the user to enter the old semester to update
+                        System.out.print("Enter semester to update (SPxx|SUxx|FAxx): ");
+                        String oldSemester = sc.nextLine().trim().toUpperCase();
+
+                        // Check if the input is empty
+                        if (oldSemester.isEmpty()) {
+                            System.out.println("Semester cannot be empty.");
+                            continue; // Prompt the user to enter again
                         }
-                        int recordNum;
-                        try {
-                            recordNum = Integer.parseInt(recordInput) - 1;
-                            if (recordNum < 0 || recordNum >= updateList.size()) {
-                                System.out.println("Invalid record number.");
-                                continue;
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("Please enter a valid number.");
+
+                        // Validate the format of the semester (e.g., SP23, SU24, FA25)
+                        if (!oldSemester.matches("^(SP|SU|FA)[0-9]{2}$")) {
+                            System.out.println("Invalid semester format. Use SPxx, SUxx, or FAxx.");
                             continue;
                         }
 
-                        // Get and validate new semester
+                        // Check if the old semester exists in the system
+                        boolean oldSemesterExists = false;
+                        for (StudentInfo student : studentStorage) {
+                            if (student.getStudentSemester().equals(oldSemester)) {
+                                oldSemesterExists = true;
+                                break; // Exit loop if found
+                            }
+                        }
+
+                        // If the semester does not exist, prompt the user to enter another semester
+                        if (!oldSemesterExists) {
+                            System.out.println("Semester " + oldSemester + " does not exist in the system. Please enter another semester.");
+                            continue;
+                        }
+
+                        // Prompt the user to enter the new semester
                         System.out.print("Enter new semester (SPxx|SUxx|FAxx): ");
                         String newSemester = sc.nextLine().trim().toUpperCase();
+
+                        // Check if the new semester input is empty
                         if (newSemester.isEmpty()) {
                             System.out.println("Semester cannot be empty.");
                             continue;
                         }
+
+                        // Validate the format of the new semester
                         if (!newSemester.matches("^(SP|SU|FA)[0-9]{2}$")) {
                             System.out.println("Invalid semester format. Use SPxx, SUxx, or FAxx.");
                             continue;
                         }
 
-                        // Get target student
-                        StudentInfo targetStudent = updateList.get(recordNum);
-                        String currentSemester = targetStudent.getStudentSemester();
-                        String currentCourse = targetStudent.getStudentCourse();
-
-                        // If updating to the same semester, no need to check
-                        if (currentSemester.equals(newSemester)) {
-                            System.out.println("New semester is same as current semester. No update needed.");
+                        // If the old and new semesters are the same, no update is needed
+                        if (oldSemester.equals(newSemester)) {
+                            System.out.println("New semester is the same as the current semester. No update needed.");
                             continue;
                         }
 
-                        // Check courses in the new semester for this student
-                        Set<String> coursesInNewSemester = new HashSet<>();
+                        // Check if the new semester already exists in the system
+                        boolean newSemesterExists = false;
                         for (StudentInfo student : studentStorage) {
-                            if (student.getStudentID().equals(targetStudent.getStudentID())
-                                    && student.getStudentSemester().equals(newSemester)) {
-                                coursesInNewSemester.add(student.getStudentCourse());
-                            }
-                        }
-
-                        // Check if the course already exists in the new semester
-                        if (coursesInNewSemester.contains(currentCourse)) {
-                            System.out.println("You already have this course in semester " + newSemester);
-                            break;
-                        }
-
-                        // Check if the new semester already has 3 courses
-                        if (coursesInNewSemester.size() >= 3) {
-                            System.out.println("Cannot update to semester " + newSemester + " as it already has all 3 courses.");
-                            continue;
-                        }
-
-                        // Update the semester since all checks passed
-                        targetStudent.setStudentSemester(newSemester);
-                        System.out.println("Semester updated successfully!");
-                        break;
-                    }
-                    break;
-
-                case "3":
-                    // Update course for a specific record
-                    while (true) {
-                        // First, get and validate the semester to check
-                        System.out.print("Enter semester to check (SPxx|SUxx|FAxx): ");
-                        String checkSemester = sc.nextLine().trim().toUpperCase();
-                        if (checkSemester.isEmpty()) {
-                            System.out.println("Semester cannot be empty.");
-                            continue;
-                        }
-                        if (!checkSemester.matches("^(SP|SU|FA)[0-9]{2}$")) {
-                            System.out.println("Invalid semester format. Use SPxx, SUxx, or FAxx.");
-                            continue;
-                        }
-
-                        // Check if the semester exists in the system
-                        boolean semesterExists = false;
-                        for (StudentInfo student : studentStorage) {
-                            if (student.getStudentSemester().equals(checkSemester)) {
-                                semesterExists = true;
+                            if (student.getStudentSemester().equals(newSemester)) {
+                                newSemesterExists = true;
                                 break;
                             }
                         }
 
-                        if (!semesterExists) {
-                            System.out.println("This semester does not exist in the system.");
+                        // If the new semester already exists, prevent the update
+                        if (newSemesterExists) {
+                            System.out.println("Cannot update to semester " + newSemester + " as it already exists in the system.");
                             continue;
                         }
 
-                        // Check if the semester has all 3 courses
-                        Set<String> coursesInSemester = new HashSet<>();
+                        // Update all student records from the old semester to the new semester
                         for (StudentInfo student : studentStorage) {
-                            if (student.getStudentSemester().equals(checkSemester)) {
-                                coursesInSemester.add(student.getStudentCourse());
+                            if (student.getStudentSemester().equals(oldSemester)) {
+                                student.setStudentSemester(newSemester);
+                            }
+                        }
+                        System.out.println("All students updated from semester " + oldSemester + " to semester " + newSemester + " successfully!");
+                        break; // Exit the loop after a successful update
+                    }
+
+                case "3":
+                    // Loop until a valid semester and course update is provided
+                    while (true) {
+                        // Prompt the user to enter the semester to check for course updates
+                        System.out.print("Enter semester to check (SPxx|SUxx|FAxx): ");
+                        String checkSemester = sc.nextLine().trim().toUpperCase(); // Read input, remove extra spaces, and convert to uppercase
+
+                        // Check if the input is empty
+                        if (checkSemester.isEmpty()) {
+                            System.out.println("Semester cannot be empty."); // Notify the user
+                            continue; // Restart the loop
+                        }
+
+                        // Validate the format of the semester (e.g., SP23, SU24, FA25)
+                        if (!checkSemester.matches("^(SP|SU|FA)[0-9]{2}$")) {
+                            System.out.println("Invalid semester format. Use SPxx, SUxx, or FAxx."); // Notify the user of incorrect format
+                            continue; // Restart the loop
+                        }
+
+                        // Check if the semester exists in the system
+                        boolean semesterExists = false; // Flag to track if semester is found
+                        for (StudentInfo student : studentStorage) { // Iterate over the list of students
+                            if (student.getStudentSemester().equals(checkSemester)) { // Check if semester matches
+                                semesterExists = true; // Set flag to true
+                                break; // Exit loop early if found
                             }
                         }
 
-                        // If semester already has all 3 courses, return to menu
+                        // If the semester does not exist, prompt the user to enter another semester
+                        if (!semesterExists) {
+                            System.out.println("This semester does not exist in the system."); // Notify the user
+                            continue; // Restart the loop
+                        }
+
+                        // Check if the semester already contains all 3 courses (Java, .Net, C/C++)
+                        Set<String> coursesInSemester = new HashSet<>(); // Create a set to store unique courses
+                        for (StudentInfo student : studentStorage) { // Iterate through student records
+                            if (student.getStudentSemester().equals(checkSemester)) { // If the semester matches
+                                coursesInSemester.add(student.getStudentCourse()); // Add the course to the set
+                            }
+                        }
+
+                        // If the semester already has all 3 courses, return to the menu
                         if (coursesInSemester.size() >= 3) {
-                            System.out.println("This semester already has all 3 courses (Java, .Net, C/C++). Cannot update course.");
-                            break;  // Return to menu
+                            System.out.println("This semester already has all 3 courses (Java, .Net, C/C++). Cannot update course."); // Notify user
+                            break;  // Exit the loop and return to menu
                         }
 
                         // Create a list of records for the specified semester
-                        List<StudentInfo> semesterRecords = new ArrayList<>();
-                        for (StudentInfo student : updateList) {
-                            if (student.getStudentSemester().equals(checkSemester)) {
-                                semesterRecords.add(student);
+                        List<StudentInfo> semesterRecords = new ArrayList<>(); // Initialize an empty list
+                        for (StudentInfo student : updateList) { // Iterate through student records
+                            if (student.getStudentSemester().equals(checkSemester)) { // If semester matches
+                                semesterRecords.add(student); // Add student to the list
                             }
                         }
 
+                        // If no records are found, prompt the user to enter another semester
                         if (semesterRecords.isEmpty()) {
-                            System.out.println("No courses found in semester " + checkSemester + " for this student.");
-                            continue;
+                            System.out.println("No courses found in semester " + checkSemester + " for this student."); // Notify user
+                            continue; // Restart the loop
                         }
 
-                        // Display records for the selected semester
+                        // Display the student records for the selected semester
                         System.out.println("\nCourses in semester " + checkSemester + ":");
                         System.out.println("+-----+------------+------------------+----------+--------+");
                         System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
                         System.out.println("+-----+------------+------------------+----------+--------+");
-                        for (int i = 0; i < semesterRecords.size(); i++) {
-                            System.out.printf("|%5d", i + 1);
-                            System.out.println(semesterRecords.get(i).getReport());
+                        for (int i = 0; i < semesterRecords.size(); i++) { // Iterate through the list of records
+                            System.out.printf("|%5d", i + 1); // Print record number
+                            System.out.println(semesterRecords.get(i).getReport()); // Print student details
                         }
                         System.out.println("+-----+------------+------------------+----------+--------+");
 
-                        // If semester is not full, proceed with course update
+                        // Prompt the user to select a record to update the course
                         System.out.print("Enter record number to update course (1-" + semesterRecords.size() + "): ");
-                        String recordInput = sc.nextLine().trim();
+                        String recordInput = sc.nextLine().trim(); // Read input and remove extra spaces
+
+                        // Validate record input
                         if (recordInput.isEmpty()) {
-                            System.out.println("Record number cannot be empty.");
-                            continue;
+                            System.out.println("Record number cannot be empty."); // Notify user
+                            continue; // Restart the loop
                         }
-                        int recordNum;
+
+                        int recordNum; // Variable to store the record index
                         try {
-                            recordNum = Integer.parseInt(recordInput) - 1;
-                            if (recordNum < 0 || recordNum >= semesterRecords.size()) {
-                                System.out.println("Invalid record number.");
-                                continue;
+                            recordNum = Integer.parseInt(recordInput) - 1; // Convert input to integer and adjust index
+                            if (recordNum < 0 || recordNum >= semesterRecords.size()) { // Check if input is within range
+                                System.out.println("Invalid record number."); // Notify user
+                                continue; // Restart the loop
                             }
-                        } catch (NumberFormatException e) {
-                            System.out.println("Please enter a valid number.");
-                            continue;
+                        } catch (NumberFormatException e) { // Handle invalid number input
+                            System.out.println("Please enter a valid number."); // Notify user
+                            continue; // Restart the loop
                         }
 
-                        // Get and validate new course
+                        // Prompt the user to enter a new course
                         System.out.print("Enter new course (Java|.Net|C/C++): ");
-                        String newCourse = sc.nextLine().trim().toUpperCase();
+                        String newCourse = sc.nextLine().trim().toUpperCase(); // Read input and convert to uppercase
+
+                        // Validate course input
                         if (newCourse.isEmpty()) {
-                            System.out.println("Course cannot be empty.");
-                            continue;
+                            System.out.println("Course cannot be empty."); // Notify user
+                            continue; // Restart the loop
                         }
-                        if (!newCourse.matches("^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) {
-                            System.out.println("Invalid course. Choose Java, .Net, or C/C++");
-                            continue;
+                        if (!newCourse.matches("^(JAVA)|^([.])(NET)$|^(C[/])(C)([+]{2,2})$")) { // Check if input is a valid course
+                            System.out.println("Invalid course. Choose Java, .Net, or C/C++"); // Notify user
+                            continue; // Restart the loop
                         }
 
-                        // Get target student
-                        StudentInfo targetStudent = semesterRecords.get(recordNum);
+                        // Get the target student record
+                        StudentInfo targetStudent = semesterRecords.get(recordNum); // Retrieve student record
 
-                        // Check if the new course already exists for this student in the semester
-                        boolean courseExists = false;
-                        for (StudentInfo student : studentStorage) {
-                            if (student.getStudentSemester().equals(checkSemester) && student.getStudentID().equals(targetStudent.getStudentID()) && student.getStudentCourse().equals(newCourse)) {
-                                courseExists = true;
-                                break;
+                        // Check if the new course is already registered for this student in the semester
+                        boolean courseExists = false; // Flag to track if course is already registered
+                        for (StudentInfo student : studentStorage) { // Iterate through student records
+                            if (student.getStudentSemester().equals(checkSemester)
+                                    && student.getStudentID().equals(targetStudent.getStudentID())
+                                    && student.getStudentCourse().equals(newCourse)) { // Check if course already exists
+                                courseExists = true; // Set flag to true
+                                break; // Exit loop early
                             }
                         }
 
-                        // Prevent update if course already exists for this student in the semester
+                        // If the course is already registered, prevent the update
                         if (courseExists) {
-                            System.out.println("You have already registered for this course in this semester.");
-                            continue;
+                            System.out.println("You have already registered for this course in this semester."); // Notify user
+                            continue; // Restart the loop
                         }
 
-                        // Update the course since all checks passed
-                        targetStudent.setStudentCourse(newCourse);
-                        System.out.println("Course updated successfully!");
-                        break;
+                        // Update the course for the selected student record
+                        targetStudent.setStudentCourse(newCourse); // Update the course
+                        System.out.println("Course updated successfully!"); // Notify user of success
+                        break; // Exit loop after a successful update
                     }
-                    break;
+                    break; // Exit switch case
 
                 case "4":
-                    return;
+                    return; // return menu
             }
 
-            // Display updated information in table format
+            // Display a header message indicating that the student information has been updated
             System.out.println("\nUpdated Student Information:");
+
+// Print the table header with column names
             System.out.println("+-----+------------+------------------+----------+--------+");
             System.out.println("| No. | Student ID |   Student Name   | Semester | Course |");
             System.out.println("+-----+------------+------------------+----------+--------+");
+
+// Loop through the updated student list and display each student's details
             for (int i = 0; i < updateList.size(); i++) {
+                // Print the record number (starting from 1) with right-aligned formatting
                 System.out.printf("|%5d", i + 1);
+                // Print the student's information using the getReport() method
                 System.out.println(updateList.get(i).getReport());
             }
+
+// Print the table footer to close the display
             System.out.println("+-----+------------+------------------+----------+--------+");
+
         }
     }
 
@@ -1151,6 +1413,90 @@ public class Program {
                 break;
             } else { // If invalid input, prompt again
                 System.out.println("Please enter Y or N.");
+            }
+        }
+    }
+
+    /**
+     * This method used to sort ID of employee. Sort in the order of the number
+     * behind the CE Using bubble sort.
+     */
+    public void sortByID() {
+        for (int i = 0; i < studentStorage.size() - 1; i++) {
+            for (int j = 0; j < studentStorage.size() - i - 1; j++) {
+                // Get ID1 and ID2
+                String id1 = studentStorage.get(j).getStudentID();
+                String id2 = studentStorage.get(j + 1).getStudentID();
+                // Cut string and convert to number.
+                int num1 = Integer.parseInt(id1.substring(2));  // cut 2 first char ex: CE191249 -> num2 = 191249
+                int num2 = Integer.parseInt(id2.substring(2)); // cut 2 first char ex: CE191242 -> num2 = 191242
+
+                // compare if num1 higher than num2 change position.
+                if (num1 > num2) {
+                    StudentInfo temp = studentStorage.get(j); // Set temp = ID at array[j]
+                    studentStorage.set(j, studentStorage.get(j + 1)); // set ID[j] = ID[j+1]
+                    studentStorage.set(j + 1, temp); // set ID[j+1] = temp
+                }
+            }
+        }
+    }
+
+    /**
+     * This method used to sort ID of employee. Sort in the order of the number
+     * behind the Semester code FA, SU, SP Using bubble sort.
+     */
+    public void sortSemester() {
+        for (int i = 0; i < studentStorage.size() - 1; i++) {
+            for (int j = 0; j < studentStorage.size() - i - 1; j++) {
+                // Get ID1 and ID2
+                String id1 = studentStorage.get(j).getStudentSemester();
+                String id2 = studentStorage.get(j + 1).getStudentSemester();
+                // Cut string and convert to number.
+                int num1 = Integer.parseInt(id1.substring(2));  // cut 2 first char ex: SP12 -> num1 = 12
+                int num2 = Integer.parseInt(id2.substring(2)); // cut 2 first char ex: SP11 -> num2 = 11
+
+                // compare if num1 higher than num2 change position.
+                if (num1 > num2) {
+                    StudentInfo temp = studentStorage.get(j); // Set temp = ID at array[j]
+                    studentStorage.set(j, studentStorage.get(j + 1)); // set ID[j] = ID[j+1]
+                    studentStorage.set(j + 1, temp); // set ID[j+1] = temp
+                }
+            }
+        }
+    }
+
+    /**
+     * Sorts the student list in ascending order based on the first letter of
+     * the first name. Uses the Bubble Sort algorithm.
+     */
+    public void sortCourse() {
+        for (int i = 0; i < studentStorage.size() - 1; i++) {
+            for (int j = 0; j < studentStorage.size() - 1 - i; j++) {
+                // Compare the first letter of two adjacent student names.
+                if (studentStorage.get(j).getStudentCourse().charAt(0) > studentStorage.get(j + 1).getStudentCourse().charAt(0)) {
+                    // Swap the elements if they are in the wrong order.
+                    StudentInfo temp = studentStorage.get(j); //temp == name at j.
+                    studentStorage.set(j, studentStorage.get(j + 1)); // At j in array == name at j+1.
+                    studentStorage.set(j + 1, temp);  // Name at j+1 == temp.
+                }
+            }
+        }
+    }
+
+    /**
+     * Sorts the student list in ascending order based on the first letter of
+     * the first name. Uses the Bubble Sort algorithm.
+     */
+    public void sortFirstName() {
+        for (int i = 0; i < studentStorage.size() - 1; i++) {
+            for (int j = 0; j < studentStorage.size() - 1 - i; j++) {
+                // Compare the first letter of two adjacent student names.
+                if (studentStorage.get(j).getStudentName().charAt(0) > studentStorage.get(j + 1).getStudentName().charAt(0)) {
+                    // Swap the elements if they are in the wrong order.
+                    StudentInfo temp = studentStorage.get(j); //temp == name at j.
+                    studentStorage.set(j, studentStorage.get(j + 1)); // At j in array == name at j+1.
+                    studentStorage.set(j + 1, temp);  // Name at j+1 == temp.
+                }
             }
         }
     }
