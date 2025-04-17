@@ -1,0 +1,220 @@
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ============ HEADER ============ */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    flex-wrap: wrap;
+}
+
+.logo-content img {
+    width: 150px;
+    height: auto;
+    margin-left: 10px;
+}
+
+.search {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 20px;
+    position: relative;
+}
+
+.search .form-control {
+    width: 100%;
+    height: 36px;
+    padding-left: 35px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    color: #aaa;
+}
+
+.right-side {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* ============ MENU ============ */
+.content-menu .navbar {
+    background-color: #00bcd4;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+.content-menu .navbar-nav > li > a {
+    color: white !important;
+    padding: 12px 18px;
+    display: block;
+    font-weight: bold;
+}
+
+.content-menu .navbar-nav > li.active > a {
+    background-color: #f47c3c !important;
+}
+
+/* ============ BANNER ============ */
+.banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* ============ LEFT SIDEBAR OPTIONS ============ */
+.left-side {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.left-side h4 {
+    color: #2196f3;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.left-side p {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* ============ MAIN CONTENT ============ */
+.main-content {
+    float: right;
+    width: 78%;
+    padding: 0 10px;
+}
+
+h2 {
+    color: #00bcd4;
+    font-size: 22px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    padding: 10px;
+}
+
+.tour-box {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.tour-box img {
+    float: left;
+    width: 220px;
+    height: 140px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+.tour-box h3 {
+    font-size: 18px;
+    color: #009688;
+    margin-bottom: 5px;
+}
+
+.tour-box p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.tour-box span {
+    color: #f47c3c;
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}
+
+.booknow {
+    background-color: #00bcd4;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 3px;
+    text-decoration: none;
+    float: right;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* ============ FOOTER ============ */
+footer {
+    clear: both;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    border-top: 1px solid #ccc;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+    .left-side, .main-content {
+        float: none;
+        width: 100%;
+    }
+
+    .tour-box img {
+        float: none;
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .booknow {
+        float: none;
+        display: inline-block;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search {
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    .right-side {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+}
